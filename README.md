@@ -1,7 +1,9 @@
 [![Build Status](https://travis-ci.org/rahulkp220/Zabbix.jl.svg?branch=master)](https://travis-ci.org/rahulkp220/Zabbix.jl)
 [![codecov.io](http://codecov.io/github/rahulkp220/Zabbix.jl/coverage.svg?branch=master)](http://codecov.io/github/rahulkp220/Zabbix.jl?branch=master)
 
-# Zabbix.jl 
+# Zabbix.jl
+![zabbix](https://upload.wikimedia.org/wikipedia/commons/b/bf/Zabbix_logo.png)
+
 Julia API for Zabbix :ghost:
 
 ## Installation
