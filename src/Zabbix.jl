@@ -11,9 +11,12 @@ using JSON
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
-ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php", "USERNAME", "PASSWORD", 1, Dict("Content-Type"=>"application/json-rpc"), "2.0")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
+ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php", "USERNAME", "PASSWORD", true, 0, Dict("Content-Type"=>"application/json-rpc"), "2.0")
 
+### Note:
+
+Here the verbosity is set to true by default. You may wish to set up by passing false instead of true.
 """
 type ZabbixAPI
 
@@ -21,16 +24,18 @@ type ZabbixAPI
     server_url::String
     username::String
     password::String
-    id::Int64
 
-    # By default set fields
+    # By default set, but can be changed while instantiating
+    verbose::Bool
+
+    # By default set
+    id::Int64
     headers::Dict
     jsonrpc::String
 
     # Inner constructor
-    ZabbixAPI(server_url,username,password,id=1,headers=Dict("Content-Type"=>"application/json-rpc"),
-    jsonrpc="2.0") = new(server_url,username,password,id,headers,jsonrpc)
-
+    ZabbixAPI(server_url,username,password,id=1,verbose=true,headers=Dict("Content-Type"=>"application/json-rpc"),
+    jsonrpc="2.0") = new(server_url,username,password,id,verbose,headers,jsonrpc)
 end
 
 
@@ -39,27 +44,31 @@ end
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
 
 
 #### get the api version
 
 julia>api_version(z)
 
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
 "3.2.11"
 
 """
 function api_version(z::ZabbixAPI)
+    verbose = z.verbose
 
-   # contruct data
-   dict_data = Dict("jsonrpc"=>z.jsonrpc,"id"=>z.id,"method"=>"apiinfo.version","auth"=>nothing,"params"=>Dict())
-   json_data = JSON.json(dict_data)
+    # contruct data
+    dict_data = Dict("jsonrpc"=>z.jsonrpc,"id"=>z.id,"method"=>"apiinfo.version","params"=>Dict())
+    json_data = JSON.json(dict_data)
 
-   # requests data from zabbix
-   output = Requests.post(z.server_url,data=json_data,headers=z.headers)
-   
-   # return response
-   JSON.parse(convert(String, output.data))["result"]
+    # requests data from zabbix
+    if verbose info("Hitting $(z.server_url) ...") end
+    output = Requests.post(z.server_url,data=json_data,headers=z.headers)
+
+    # return response
+    JSON.parse(convert(String, output.data))["result"]
 end
 
 
@@ -69,17 +78,20 @@ end
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
 
 
 #### get the auth token
 
 julia> auth_token(z)
 
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
 "bc86891a1c6c9ef5d41d640eb258a81a"
 
 """
 function auth_token(z::ZabbixAPI)
+    verbose = z.verbose
 
     # construct data
     dict_data=Dict("jsonrpc"=>z.jsonrpc,"id"=>z.id,"method"=>"user.login",
@@ -87,6 +99,7 @@ function auth_token(z::ZabbixAPI)
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
+    if verbose info("Hitting $(z.server_url) ...") end
     output = Requests.post(z.server_url,data=json_data,headers=z.headers)
 
     # return token
@@ -101,12 +114,16 @@ end
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", false)
 
 
 #### get all hosts for a user
 
 julia>get_all_hosts(z)
+
+INFO: Getting authentication token ... 
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
 
 Dict{String,Any} with 3 entries:
   "id"      => 1
@@ -115,8 +132,10 @@ Dict{String,Any} with 3 entries:
 
 """
 function get_all_hosts(z::ZabbixAPI)
+    verbose = z.verbose
 
     # get token
+    if verbose info("Getting authentication token ... ") end
     token = auth_token(z)
 
     # construct data
@@ -125,6 +144,7 @@ function get_all_hosts(z::ZabbixAPI)
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
+    if verbose info("Hitting $(z.server_url) ...") end
     output = Requests.post(z.server_url,data=json_data,headers=z.headers)
 
     # return token
@@ -143,9 +163,11 @@ head over to https://www.zabbix.com/documentation/2.2/manual/api/reference
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
 
 julia> Zabbix.make_request(z, "apiinfo.version", Dict())
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
 
 "3.2.11"
 
@@ -166,11 +188,19 @@ Dict{String,Any} with 2 entries:
 
 #### create the zabbix object
 
-julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD")
+julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
 
 #### finally make request
 
 julia> Zabbix.make_request(z, method, params)
+
+INFO: Getting authentication token ... 
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Updating request id for next API call ...
 
 Dict{String,Any} with 3 entries:
   "id"      => 1
@@ -180,6 +210,14 @@ Dict{String,Any} with 3 entries:
 #### display all entries for a host
 
 julia> Zabbix.make_request(z, method, params)["result"][1]
+
+INFO: Getting authentication token ... 
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Updating request id for next API call ...
 
 Dict{String,Any} with 39 entries:
   "lastaccess"         => "0"
@@ -221,14 +259,25 @@ Dict{String,Any} with 39 entries:
 
 julia> Zabbix.make_request(z, method, params)["result"][1]["hostid"]
 
+INFO: Getting authentication token ... 
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
+
+INFO: Updating request id for next API call ...
+
 "10084"
 
 """
 function make_request(z::ZabbixAPI, method::String, params=Dict())
+    verbose = z.verbose
+    
     if method == "apiinfo.version" && params == Dict()
         return api_version(z)
     else
         # get token
+        if verbose info("Getting authentication token ... ") end
         token = auth_token(z)
         
         # construct data
@@ -236,9 +285,11 @@ function make_request(z::ZabbixAPI, method::String, params=Dict())
         json_data = JSON.json(dict_data)
 
         # requests data from zabbix
+        if verbose info("Hitting $(z.server_url) ...") end
         output = Requests.post(z.server_url,data=json_data,headers=z.headers)
 
         # increment the id for further calls
+        if verbose info("Updating request id for next API call ...") end
         setfield!(z,:id, z.id+1)
         
         # return token

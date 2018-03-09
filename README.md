@@ -24,8 +24,8 @@ INFO: No packages to install, update or remove
 
 * Creating a ZabbixAPI instance
 ```julia
-julia> zabbix = Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php","USERNAME","******")
-Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php", "USERNAME", "******", 1, Dict("Content-Type"=>"application/json-rpc"), "2.0")
+julia> zabbix = Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php","USERNAME","******",false)
+Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php", "USERNAME","******",false, 0, Dict("Content-Type"=>"application/json-rpc"), "2.0")
 ```
 
 * Get the Zabbix API's version Info
