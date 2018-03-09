@@ -43,11 +43,62 @@ Dict{String,Any} with 3 entries:
 
 * Make any request to the zabbix server
 
-The `make_request` function requires you to pass `methods`(aka Zabbix methods like `hosts.get` etc) and params ie.
-parameters in a form of a Dict() object. A easy sample is given on Zabbix's official [website](https://www.zabbix.com/documentation/2.2/manual/api)
+The `make_request` function requires you to pass `methods`(aka Zabbix methods like `hosts.get` etc) and `params` ie.
+parameters in a form of a `Dict()` object. A easy sample is given on Zabbix's official [website](https://www.zabbix.com/documentation/2.2/manual/api)
 ```julia
 julia> Zabbix.make_request(zabbix, "apiinfo.version", Dict())
 "3.2.11"
+
+julia> method = "host.get"
+"host.get"
+
+julia> params = Dict("output"=>"extend", "filter"=>Dict("host"=>["localhost"]))
+Dict{String,Any} with 2 entries:
+  "output" => "extend"
+  "filter" => Dict("host"=>String["localhost"])
+
+julia> Zabbix.make_request(zobj, method, params)
+Dict{String,Any} with 3 entries:
+  "id"      => 1
+  "jsonrpc" => "2.0"
+  "result"  => Any[Dict{String,Any}(Pair{String,Any}("lastaccess", "0"),Pair{String,Any}("ipmi_privilege", "2"),Pair{String,Any}("ipmi_error…
+
+ julia> Zabbix.make_request(zobj, method, params)["result"][1]
+Dict{String,Any} with 39 entries:
+  "lastaccess"         => "0"
+  "ipmi_privilege"     => "2"
+  "ipmi_errors_from"   => "0"
+  "snmp_available"     => "0"
+  "templateid"         => "0"
+  "disable_until"      => "0"
+  "jmx_available"      => "0"
+  "maintenance_from"   => "0"
+  "tls_psk_identity"   => ""
+  "available"          => "1"
+  "ipmi_password"      => ""
+  "tls_accept"         => "1"
+  "name"               => "localhost"
+  "tls_issuer"         => ""
+  "status"             => "0"
+  "maintenance_status" => "0"
+  "hostid"             => "10084"
+  "tls_connect"        => "1"
+  "ipmi_available"     => "0"
+  "description"        => ""
+  "errors_from"        => "0"
+  "maintenance_type"   => "0"
+  "error"              => ""
+  "ipmi_username"      => ""
+  "snmp_disable_until" => "0"
+  "snmp_error"         => ""
+  "tls_subject"        => ""
+  "maintenanceid"      => "0"
+  "host"               => "localhost"
+  "jmx_error"          => ""
+  "ipmi_disable_until" => "0"
+  "snmp_errors_from"   => "0"
+  ⋮                    => ⋮
+
 ```
 
 
