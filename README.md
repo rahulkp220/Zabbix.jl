@@ -24,11 +24,12 @@ INFO: No packages to install, update or remove
 
 * Creating a ZabbixAPI instance
 
-Note that `verbose` is set to false. For better debugging, set `verbose=true` as available in the API docs.
 ```julia
 julia> zabbix = Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php","USERNAME","******",false)
 Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php", "USERNAME","******",false, 0, Dict("Content-Type"=>"application/json-rpc"), "2.0")
 ```
+Note that I have set `verbose=false`. However, by default we have, `verbose=true`. 
+Hence only set `verbose=false` if you are okay continuing without the info messages.
 
 * Get the Zabbix API's version Info
 ```julia
