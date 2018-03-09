@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rahulkp220/Zabbix.jl.svg?branch=master)](https://travis-ci.org/rahulkp220/Zabbix.jl)
+
 # :boom: Zabbix.jl :boom:
 ![zabbix](https://upload.wikimedia.org/wikipedia/commons/b/bf/Zabbix_logo.png)
 
