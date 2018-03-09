@@ -46,9 +46,12 @@ Dict{String,Any} with 3 entries:
 The `make_request` function requires you to pass `methods`(aka Zabbix methods like `hosts.get` etc) and `params` ie.
 parameters in a form of a `Dict()` object. A easy sample is given on Zabbix's official [website](https://www.zabbix.com/documentation/2.2/manual/api)
 ```julia
+
+# another way to get the zabbix version
 julia> Zabbix.make_request(zabbix, "apiinfo.version", Dict())
 "3.2.11"
 
+# getting the details of a host given its hostname
 julia> method = "host.get"
 "host.get"
 
@@ -99,6 +102,8 @@ Dict{String,Any} with 39 entries:
   "snmp_errors_from"   => "0"
   ⋮                    => ⋮
 
+julia> Zabbix.make_request(zobj, method, params)["result"][1]["hostid"]
+"10084"
 ```
 
 
