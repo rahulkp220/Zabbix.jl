@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/rahulkp220/Zabbix.jl.svg?branch=master)](https://travis-ci.org/rahulkp220/Zabbix.jl)
 [![codecov.io](http://codecov.io/github/rahulkp220/Zabbix.jl/coverage.svg?branch=master)](http://codecov.io/github/rahulkp220/Zabbix.jl?branch=master)
 
-# Zabbix.jl
+# :boom: Zabbix.jl :boom:
 ![zabbix](https://upload.wikimedia.org/wikipedia/commons/b/bf/Zabbix_logo.png)
 
 Julia API for Zabbix :ghost:
@@ -10,6 +10,14 @@ Julia API for Zabbix :ghost:
 ```julia
 Pkg.clone("https://github.com/rahulkp220/Zabbix.jl.git")
 using Zabbix
+```
+## Updating the package
+```julia
+julia> Pkg.update("Zabbix.jl")
+INFO: Updating METADATA...
+INFO: Updating Zabbix master... bae5945f → df4dbbf9
+INFO: Computing changes...
+INFO: No packages to install, update or remove
 ```
 
 ## Usage
@@ -60,13 +68,13 @@ Dict{String,Any} with 2 entries:
   "output" => "extend"
   "filter" => Dict("host"=>String["localhost"])
 
-julia> Zabbix.make_request(zobj, method, params)
+julia> Zabbix.make_request(zabbix, method, params)
 Dict{String,Any} with 3 entries:
   "id"      => 1
   "jsonrpc" => "2.0"
   "result"  => Any[Dict{String,Any}(Pair{String,Any}("lastaccess", "0"),Pair{String,Any}("ipmi_privilege", "2"),Pair{String,Any}("ipmi_error…
 
- julia> Zabbix.make_request(zobj, method, params)["result"][1]
+ julia> Zabbix.make_request(zabbix, method, params)["result"][1]
 Dict{String,Any} with 39 entries:
   "lastaccess"         => "0"
   "ipmi_privilege"     => "2"
@@ -102,8 +110,10 @@ Dict{String,Any} with 39 entries:
   "snmp_errors_from"   => "0"
   ⋮                    => ⋮
 
-julia> Zabbix.make_request(zobj, method, params)["result"][1]["hostid"]
+julia> Zabbix.make_request(zabbix, method, params)["result"][1]["hostid"]
 "10084"
 ```
 
-
+## Facing issues? :scream:
+* Open a PR with the detailed expaination of the issue
+* Reach me out [here](https://www.rahullakhanpal.in")
