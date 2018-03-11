@@ -121,4 +121,4 @@ julia> Zabbix.make_request(zabbix, method, params)["result"][1]["hostid"]
 
 ## Facing issues? :scream:
 * Open a PR with the detailed expaination of the issue
-* Reach me out [here](https://www.rahullakhanpal.in")
+* Reach me out [here](https://www.rahullakhanpal.in)
