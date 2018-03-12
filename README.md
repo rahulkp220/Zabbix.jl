@@ -21,11 +21,7 @@ Already up-to-date.
 ```
 ## Updating the package
 ```julia
-julia> Pkg.update("Zabbix.jl")
-INFO: Updating METADATA...
-INFO: Updating Zabbix master... bae5945f → df4dbbf9
-INFO: Computing changes...
-INFO: No packages to install, update or remove
+julia> Pkg.update("Zabbix")
 ```
 
 ## Usage
