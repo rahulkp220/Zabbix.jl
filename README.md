@@ -9,9 +9,15 @@ Julia bindings for Zabbix API :ghost:
 * 3.2.11
 
 ## Installation
+Since `Zabbix` is registered in `METADATA.jl`, you can directly install it like,
 ```julia
-Pkg.clone("https://github.com/rahulkp220/Zabbix.jl.git")
-using Zabbix
+julia> Pkg.add("Zabbix")
+INFO: Updating cache of Zabbix...
+INFO: Installing Zabbix v0.0.3
+INFO: Building HttpParser
+INFO: Building Homebrew
+Already up-to-date.
+
 ```
 ## Updating the package
 ```julia
