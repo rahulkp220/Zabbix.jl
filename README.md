@@ -13,12 +13,6 @@ Julia bindings for Zabbix API :ghost:
 Since `Zabbix` is registered in `METADATA.jl`, you can directly install it like,
 ```julia
 julia> Pkg.add("Zabbix")
-INFO: Updating cache of Zabbix...
-INFO: Installing Zabbix v0.0.3
-INFO: Building HttpParser
-INFO: Building Homebrew
-Already up-to-date.
-
 ```
 ## Updating the package
 ```julia
