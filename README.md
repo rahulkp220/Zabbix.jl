@@ -36,7 +36,10 @@ Hence only set `verbose=false` if you are okay continuing without the info messa
 * Get the Zabbix API's version Info
 ```julia
 julia> Zabbix.api_version(zabbix)
-"3.2.11"
+v"3.2.11"
+
+julia>typeof(Zabbix.api_version(zabbix))
+VersionNumber
 ```
 
 * Get the auth token
@@ -62,7 +65,7 @@ parameters in a form of a `Dict()` object. A easy sample is given on Zabbix's of
 
 # another way to get the zabbix version
 julia> Zabbix.make_request(zabbix, "apiinfo.version", Dict())
-"3.2.11"
+v"3.2.11"
 
 # getting the details of a host given its hostname
 julia> method = "host.get"

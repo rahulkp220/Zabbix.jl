@@ -53,7 +53,12 @@ julia>api_version(z)
 
 INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
 
-"3.2.11"
+v"3.2.11"
+
+# the type returned is actually a VersionNumber
+julia>typeof(Zabbix.api_version(zabbix))
+
+VersionNumber
 
 """
 function api_version(z::ZabbixAPI)
@@ -68,7 +73,7 @@ function api_version(z::ZabbixAPI)
     output = Requests.post(z.server_url,data=json_data,headers=z.headers)
 
     # return response
-    JSON.parse(convert(String, output.data))["result"]
+    convert(VersionNumber, JSON.parse(convert(String, output.data))["result"])
 end
 
 
@@ -165,11 +170,6 @@ head over to https://www.zabbix.com/documentation/2.2/manual/api/reference
 
 julia>z = ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php","USERNAME","PASSWORD", true)
 
-julia> Zabbix.make_request(z, "apiinfo.version", Dict())
-
-INFO: Hitting http://SERVER_URL/zabbix/api_jsonrpc.php ...
-
-"3.2.11"
 
 #### create the zabbix method
 
