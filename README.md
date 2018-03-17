@@ -10,8 +10,7 @@
 # Zabbix.jl
 Julia bindings for Zabbix API :fire:
 
-## Supported Versions
-* 3.2.11
+The package has been tested over version `3.2.11`.
 
 ## Installation
 Since `Zabbix` is registered in `METADATA.jl`, you can directly install it like,
@@ -26,7 +25,7 @@ julia> Pkg.update("Zabbix")
 ## How it works?
 Please make sure that you have a valid Zabbix URL available along with the right access levels. In case you have only `read` access on the zabbix server, you may not be able to use configuration and management operations. Full `read & write` access is desired.
 
-* Creating a ZabbixAPI instance
+#### Creating a ZabbixAPI instance
 
 ```julia
 julia> zabbix = Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php","USERNAME","******",false)
