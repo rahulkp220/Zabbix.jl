@@ -1,4 +1,11 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/rahulkp220/Zabbix.jl.svg?branch=master)](https://travis-ci.org/rahulkp220/Zabbix.jl)
+[![codecov.io](http://codecov.io/github/rahulkp220/Zabbix.jl/coverage.svg?branch=master)](http://codecov.io/github/rahulkp220/Zabbix.jl?branch=master)
+[![GitHub contributors](https://img.shields.io/github/contributors/rahulkp220/Zabbix.jl.svg)](https://github.com/rahulkp220/Zabbix.jl/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/rahulkp220/Zabbix.jl.svg)](https://github.com/rahulkp220/Zabbix.jl/issues/)
+[![GitHub version](https://badge.fury.io/gh/rahulkp220%2FZabbix.jl.svg)](https://github.com/rahulkp220/Zabbix.jl)
+
+[![ForTheBadge built-by-developers](http://ForTheBadge.com/images/badges/built-by-developers.svg)](https://GitHub.com/rahulkp220/)
 
 # :boom: Zabbix.jl :boom:
 #### Current stable release - `v0.0.4`
