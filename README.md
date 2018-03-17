@@ -7,11 +7,8 @@
 
 [![ForTheBadge built-by-developers](http://ForTheBadge.com/images/badges/built-by-developers.svg)](https://GitHub.com/rahulkp220/)
 
-# :boom: Zabbix.jl :boom:
-#### Current stable release - `v0.0.4`
-![zabbix](https://upload.wikimedia.org/wikipedia/commons/b/bf/Zabbix_logo.png)
-
-Julia bindings for Zabbix API :ghost:
+# Zabbix.jl
+Julia bindings for Zabbix API :fire:
 
 ## Supported Versions
 * 3.2.11
