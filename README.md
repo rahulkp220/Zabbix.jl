@@ -18,12 +18,13 @@ Since `Zabbix` is registered in `METADATA.jl`, you can directly install it like,
 ```julia
 julia> Pkg.add("Zabbix")
 ```
-## Updating the package
+## Update
 ```julia
 julia> Pkg.update("Zabbix")
 ```
 
-## Usage
+## How it works?
+Please make sure that you have a valid Zabbix URL available along with the right access levels. In case you have only `read` access on the zabbix server, you may not be able to use configuration and management operations. Full `read & write` access is desired.
 
 * Creating a ZabbixAPI instance
 
@@ -34,7 +35,7 @@ Zabbix.ZabbixAPI("http://SERVER_IP/zabbix/api_jsonrpc.php", "USERNAME","******",
 Note that I have set `verbose=false`. However, by default we have, `verbose=true`. 
 Hence only set `verbose=false` if you are okay continuing without the info messages.
 
-* Get the Zabbix API's version Info
+#### Get the Zabbix API's version Info
 ```julia
 julia> Zabbix.api_version(zabbix)
 v"3.2.11"
@@ -43,13 +44,13 @@ julia>typeof(Zabbix.api_version(zabbix))
 VersionNumber
 ```
 
-* Get the auth token
+#### Get the auth token
 ```julia
 julia> Zabbix.auth_token(zabbix)
 "e8f8354d66f7fac2691f5c7441b8dfa0"
 ```
 
-* Get all hosts for a user
+#### Get all hosts for a user
 ```julia
 julia> Zabbix.get_all_hosts(zabbix)
 Dict{String,Any} with 3 entries:
@@ -58,7 +59,7 @@ Dict{String,Any} with 3 entries:
   "result"  => Any[Dict{String,Any}(Pair{String,Any}("host", "localhost"),Pair{String,Any}("interfaces", Any[Dict{String,Any}(Pair{String,An…
 ```
 
-* Make any request to the zabbix server
+#### Make any request to the zabbix server
 
 The `make_request` function requires you to pass `methods`(aka Zabbix methods like `hosts.get` etc) and `params` ie.
 parameters in a form of a `Dict()` object. A easy sample is given on Zabbix's official [website](https://www.zabbix.com/documentation/2.2/manual/api)
