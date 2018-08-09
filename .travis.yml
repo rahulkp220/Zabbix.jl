@@ -1,7 +1,7 @@
 language: julia
 julia:
     - nightly
-#script:
-#    - julia -e 'Pkg.clone(pwd()); Pkg.build("Zabbix"); Pkg.test("Zabbix"; coverage=true)';
-#after_success:
-#    - julia -e 'cd(Pkg.dir("Zabbix")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())';
+script:
+    - julia -e 'Pkg.clone(pwd()); Pkg.build("Zabbix"); Pkg.test("Zabbix"; coverage=true)';
+after_success:
+    - julia -e 'cd(Pkg.dir("Zabbix")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())';
