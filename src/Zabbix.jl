@@ -1,9 +1,7 @@
-__precompile__()
-
 module Zabbix
 
 # Imports
-using Requests
+using HTTP
 using JSON
 
 """
@@ -18,7 +16,7 @@ ZabbixAPI("http://SERVER_URL/zabbix/api_jsonrpc.php", "USERNAME", "PASSWORD", tr
 
 Here the verbosity is set to true by default. You may wish to set up by passing false instead of true.
 """
-type ZabbixAPI
+mutable struct ZabbixAPI
 
     # To be supplied fields
     server_url::String
@@ -69,11 +67,11 @@ function api_version(z::ZabbixAPI)
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
-    if verbose info("Hitting $(z.server_url) ...") end
-    output = Requests.post(z.server_url,data=json_data,headers=z.headers)
+    if verbose @info("Hitting $(z.server_url) ...") end
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
 
     # return response
-    convert(VersionNumber, JSON.parse(convert(String, output.data))["result"])
+    VersionNumber(JSON.parse(String(output.body))["result"])
 end
 
 
@@ -104,11 +102,11 @@ function auth_token(z::ZabbixAPI)
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
-    if verbose info("Hitting $(z.server_url) ...") end
-    output = Requests.post(z.server_url,data=json_data,headers=z.headers)
+    if verbose @info("Hitting $(z.server_url) ...") end
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
 
     # return token
-    JSON.parse(convert(String, output.data))["result"]
+    JSON.parse(String(output.body))["result"]
 
 end
 
@@ -140,7 +138,7 @@ function get_all_hosts(z::ZabbixAPI)
     verbose = z.verbose
 
     # get token
-    if verbose info("Getting authentication token ... ") end
+    if verbose @info("Getting authentication token ... ") end
     token = auth_token(z)
 
     # construct data
@@ -149,11 +147,11 @@ function get_all_hosts(z::ZabbixAPI)
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
-    if verbose info("Hitting $(z.server_url) ...") end
-    output = Requests.post(z.server_url,data=json_data,headers=z.headers)
+    if verbose @info("Hitting $(z.server_url) ...") end
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
 
     # return token
-    JSON.parse(convert(String, output.data))
+    JSON.parse(String(output.body))
 
 end
 
@@ -272,28 +270,28 @@ INFO: Updating request id for next API call ...
 """
 function make_request(z::ZabbixAPI, method::String, params=Dict())
     verbose = z.verbose
-    
+
     if method == "apiinfo.version" && params == Dict()
         return api_version(z)
     else
         # get token
-        if verbose info("Getting authentication token ... ") end
+        if verbose @info("Getting authentication token ... ") end
         token = auth_token(z)
-        
+
         # construct data
         dict_data = Dict("jsonrpc"=>z.jsonrpc,"id"=>z.id,"method"=>method,"auth"=>token,"params"=>params)
         json_data = JSON.json(dict_data)
 
         # requests data from zabbix
-        if verbose info("Hitting $(z.server_url) ...") end
-        output = Requests.post(z.server_url,data=json_data,headers=z.headers)
+        if verbose @info("Hitting $(z.server_url) ...") end
+        output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
 
         # increment the id for further calls
-        if verbose info("Updating request id for next API call ...") end
+        if verbose @info("Updating request id for next API call ...") end
         setfield!(z,:id, z.id+1)
-        
+
         # return token
-        JSON.parse(convert(String, output.data))
+        JSON.parse(String(output.body))
     end
 end
 
