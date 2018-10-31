@@ -26,15 +26,21 @@ mutable struct ZabbixAPI
     # By default set, but can be changed while instantiating
     verbose::Bool
 
+    ssl_verify::Bool
+
     # By default set
     id::Int64
     headers::Dict
     jsonrpc::String
 
-    # Inner constructor
-    ZabbixAPI(server_url,username,password,id=1,verbose=true,headers=Dict("Content-Type"=>"application/json-rpc"),
-    jsonrpc="2.0") = new(server_url,username,password,id,verbose,headers,jsonrpc)
 end
+ZabbixAPI(server_url, username, password;
+  verbose=true,
+  ssl_verify=true,
+  id=1,
+  headers=Dict("Content-Type"=>"application/json-rpc"),
+  jsonrpc="2.0") =
+  ZabbixAPI(server_url, username, password, verbose, ssl_verify, id, headers, jsonrpc)
 
 
 """
@@ -68,7 +74,7 @@ function api_version(z::ZabbixAPI)
 
     # requests data from zabbix
     if verbose @info("Hitting $(z.server_url) ...") end
-    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers,require_ssl_verification=z.ssl_verify)
 
     # return response
     VersionNumber(JSON.parse(String(output.body))["result"])
@@ -103,7 +109,7 @@ function auth_token(z::ZabbixAPI)
 
     # requests data from zabbix
     if verbose @info("Hitting $(z.server_url) ...") end
-    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers,require_ssl_verification=z.ssl_verify)
 
     # return token
     JSON.parse(String(output.body))["result"]
@@ -143,12 +149,12 @@ function get_all_hosts(z::ZabbixAPI)
 
     # construct data
     dict_data = Dict("jsonrpc"=>z.jsonrpc,"id"=>z.id,"method"=>"host.get","auth"=>token,
-                        "params"=>Dict("output"=>["hostid","host"],"selectInterfaces"=>["interfaceid","ip"]))
+                        "params"=>Dict("output"=>["hostid","host","status"],"selectInterfaces"=>["interfaceid","ip"]))
     json_data = JSON.json(dict_data)
 
     # requests data from zabbix
     if verbose @info("Hitting $(z.server_url) ...") end
-    output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
+    output = HTTP.post(z.server_url,body=json_data,headers=z.headers,require_ssl_verification=z.ssl_verify)
 
     # return token
     JSON.parse(String(output.body))
@@ -284,7 +290,7 @@ function make_request(z::ZabbixAPI, method::String, params=Dict())
 
         # requests data from zabbix
         if verbose @info("Hitting $(z.server_url) ...") end
-        output = HTTP.post(z.server_url,body=json_data,headers=z.headers)
+        output = HTTP.post(z.server_url,body=json_data,headers=z.headers,require_ssl_verification=z.ssl_verify)
 
         # increment the id for further calls
         if verbose @info("Updating request id for next API call ...") end
