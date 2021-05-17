@@ -10,7 +10,8 @@
 # Zabbix.jl
 Julia bindings for Zabbix API :fire:
 
-The package has been tested over version `3.2.11`.
+- The package has been tested over version `3.2.11`.
+- Listed under the Zabbix website [here](https://www.zabbix.com/integrations/julia)
 
 ## Installation
 Since `Zabbix` is registered in `METADATA.jl`, you can directly install it like,
